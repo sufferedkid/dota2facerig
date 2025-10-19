@@ -2,6 +2,7 @@ import math
 
 import bpy
 
+# Переменные для размеров
 child_shape_size = 0.005
 parent_shape_size = 0.01
 

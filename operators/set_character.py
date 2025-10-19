@@ -1,5 +1,4 @@
 import bpy
-import mathutils
 
 def collection_persona(context):
     def apply_pose_to_rest(armature_object):
@@ -21,7 +20,7 @@ def collection_persona(context):
         print("Parent object not found.")
         return
 
-    selected_objects = [obj for obj in bpy.context.selected_objects if obj.name != context]
+    selected_objects = [obj for obj in bpy.context.selected_objects if obj != obj_rod]
 
     if not selected_objects:
         print("Select at least one object to be parented.")
@@ -67,7 +66,7 @@ def collection_persona(context):
 
 class SetCharacterOperator(bpy.types.Operator):
     bl_idname = "object.set_character_operator"
-    bl_label = "Объединить части"
+    bl_label = "Собрать персонажа"
 
     def execute(self, context):
         obj_rod_name = context
