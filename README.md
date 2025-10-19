@@ -1,7 +1,8 @@
 # Dota 2 Face Rig Creator
 
-_Blender Version: 4.2.3
-Addon Version: 0.1_
+_Blender Version: 4.2.3_
+
+_Addon Version: 0.2_
 
 ## ⚙️ Установка аддона
 1. Скачайте аддон
@@ -18,15 +19,18 @@ _(Данная функция удаляет кости не основной м
 1. Выделите все части, которые хотите собрать (с костями)
 2. Выберите в аддоне основновую модель (тело)
 3. Нажмите на "Собрать персонажа"
+   
+<img width="330" height="346" alt="image" src="https://github.com/user-attachments/assets/ac250fe4-4f8b-4cc0-821d-9713261f25b3" />
 
 ### Создание фейс-рига
 1. Выберите основную модель
 2. Нажмите "Создать риг лица"
-3. У вас появится фейс-риг, переместите его в удобное место
+3. У вас появится фейс-риг, переместите его в удобное место (также можете менять размер)
 
 ![blender_oNotiw8ufE](https://github.com/user-attachments/assets/7520db6b-e258-42cc-96e0-7da96cb1ce32)
 ![blender_i83Juyw8v2](https://github.com/user-attachments/assets/d58de5df-777c-4f91-9d9b-e7f55cd5ee8a)
-![blender_wijL82yGEo](https://github.com/user-attachments/assets/8808dcbe-d23e-4781-b5d1-e0028e784de2)
+
+
 
 
 
