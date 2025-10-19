@@ -10,7 +10,7 @@ _Addon Version: 0.2_
 3. Включите аддон
 Аддон находится в вкладках справа (где "View Tool")
 
-![blender_dmuD6dKypI](https://github.com/user-attachments/assets/2d84f708-b020-4de0-912c-2b5467c4acb3)
+<img width="363" height="343" alt="image" src="https://github.com/user-attachments/assets/c9c79101-7d14-4d51-ba47-b3fe730c02fe" />
 
 
 ## 🛠️ Функции
