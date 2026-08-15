@@ -79,8 +79,8 @@ def register():
     bpy.types.Scene.face_rig_target = bpy.props.PointerProperty(type=bpy.types.Object)
     bpy.types.Scene.set_character_target = bpy.props.PointerProperty(type=bpy.types.Object)
     bpy.types.Scene.texture_upscale_target_resolution = bpy.props.IntProperty(
-        name="Разрешение",
-        description="Target texture width for all selected textures",
+        name="Длинная сторона",
+        description="Target size for the longest texture side while keeping aspect ratio",
         default=4096,
         min=256,
         max=16384,

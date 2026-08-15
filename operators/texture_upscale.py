@@ -121,14 +121,29 @@ def image_source_path(image, output_dir):
     return png_source_path
 
 
-def output_image_path(image, output_dir, target_resolution, output_format):
+def keep_aspect_resolution(image, target_resolution):
+    width, height = image.size
+    if width <= 0 or height <= 0:
+        return target_resolution, target_resolution
+
+    if width >= height:
+        output_width = target_resolution
+        output_height = max(1, round(target_resolution * height / width))
+    else:
+        output_width = max(1, round(target_resolution * width / height))
+        output_height = target_resolution
+
+    return output_width, output_height
+
+
+def output_image_path(image, output_dir, output_width, output_height, output_format):
     source_name = bpy.path.clean_name(os.path.splitext(image.name)[0])
     extension = output_format.lower()
     if extension == "auto":
         extension = image.file_format.lower() or "png"
     if extension == "jpeg":
         extension = "jpg"
-    return os.path.join(output_dir, f"{source_name}_{target_resolution}px.{extension}")
+    return os.path.join(output_dir, f"{source_name}_{output_width}x{output_height}.{extension}")
 
 
 def replace_nodes_for_selected_materials(image_nodes, old_image, new_image, color_space):
@@ -180,7 +195,8 @@ class TextureUpscaleSelectedOperator(bpy.types.Operator):
             except Exception as error:
                 self.report({'ERROR'}, f"Could not save source copy for {image.name}: {error}")
                 return {'CANCELLED'}
-            new_path = output_image_path(image, output_dir, target_resolution, output_format)
+            output_width, output_height = keep_aspect_resolution(image, target_resolution)
+            new_path = output_image_path(image, output_dir, output_width, output_height, output_format)
 
             command = [
                 ncnn_path,
@@ -188,7 +204,7 @@ class TextureUpscaleSelectedOperator(bpy.types.Operator):
                 "-o", new_path,
                 "-n", model_name,
                 "-m", models_path,
-                "-r", f"{target_resolution}x{target_resolution}",
+                "-r", f"{output_width}x{output_height}",
             ]
             if output_format != "auto":
                 command.extend(["-f", output_format])
@@ -211,5 +227,5 @@ class TextureUpscaleSelectedOperator(bpy.types.Operator):
             replace_nodes_for_selected_materials(image_nodes, image, upscaled_image, color_space)
             upscaled_count += 1
 
-        self.report({'INFO'}, f"Upscaled {upscaled_count} texture(s) to {target_resolution}px.")
+        self.report({'INFO'}, f"Upscaled {upscaled_count} texture(s), long side {target_resolution}px.")
         return {'FINISHED'}
