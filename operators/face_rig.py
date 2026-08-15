@@ -5,6 +5,18 @@ import bpy
 # Переменные для размеров
 child_shape_size = 0.005
 parent_shape_size = 0.01
+rig_object_marker = "_dota2_face_rig"
+
+category_colors = {
+    "Face Rig": (0.95, 0.95, 0.95, 1.0),
+    "Brows": (1.0, 0.72, 0.18, 1.0),
+    "Eyes": (0.22, 0.72, 1.0, 1.0),
+    "Nose": (0.30, 0.95, 0.58, 1.0),
+    "Cheeks": (1.0, 0.50, 0.20, 1.0),
+    "Lips": (1.0, 0.28, 0.48, 1.0),
+    "Jaw": (0.72, 0.45, 1.0, 1.0),
+}
+default_rig_color = (0.85, 0.85, 0.85, 1.0)
 
 # ----------------------------------------------------------------------------
 # 1) Координаты для обычных (не stereo) Shape Keys
@@ -28,9 +40,8 @@ face_positions = {
         "scale": (0.095, 0.0001, 0.050),
         "positions": {
             "eyeDown": (0.1, 0.00, 0.165),
-            "eyeClosed": (0.1, 0.00, 0.145),
+            "eyeClosed": (0.06, 0.00, 0.145),
             "squint": (0.1, 0.00, 0.105),
-            "cheekRaiser": (0.00, 0.00, 0.1),
             "upperLidRaiser": (0.00, 0.00, 0.165),
             "Stereo": {
                 "left_eye_shapes": {
@@ -59,52 +70,59 @@ face_positions = {
     },
     "Nose": {
         "location": (0.025, 0.0, 0.05),
-        "scale": (0.095, 0.0001, 0.025),
+        "scale": (0.095, 0.0001, 0.018),
         "positions": {
-            "dimpler": (0.1, 0.00, 0.05),
             "noseWrinkler": (0.00, 0.00, 0.06),
             "nostrilDilator": (0.00, 0.00, 0.04),
         }
     },
-    "Lips": {
-        "location": (0.025, 0.0, -0.02),
-        "scale": (0.095, 0.0001, 0.035),
+    "Cheeks": {
+        "location": (0.025, 0.0, 0.02),
+        "scale": (0.095, 0.0001, 0.018),
         "positions": {
-            "lipComerPuller": (0.05, 0.00, 0.00),
-            "lipPressor": (0.1, 0.00, -0.04),
-            "lipPuckerer": (0.075, 0.00, -0.04),
-            "phonemeBMP": (-0.02, 0.00, -0.02),
-            "lipStretcher": (0.02, 0.0001, -0.02),
-            "sharpLipPuller": (0.1, 0.00, 0.00),
-            "upperLipsPart": (-0.03, 0.00, 0.00),
-            "upperLipsToward": (0.01, 0.00, 0.00),
-            "upperLipRaiser": (0.03, 0.00, 0.00),
-            "lipCornerDepressor": (0.1, 0.00, -0.02),
-            "upperLipFunneler": (-0.01, 0.00, 0.00),
-            "lowerLipSuck": (0.00, 0.00, -0.04),
-            "lipTightener": (0.075, 0.00, -0.02),
+            "cheekRaiser": (-0.03, 0.00, 0.02),
+            "dimpler": (0.05, 0.00, 0.02),
+        }
+    },
+    "Lips": {
+        "location": (0.025, 0.0, -0.035),
+        "scale": (0.095, 0.0001, 0.030),
+        "positions": {
+            "lipComerPuller": (0.05, 0.00, -0.015),
+            "lipPressor": (0.1, 0.00, -0.055),
+            "lipPuckerer": (0.075, 0.00, -0.055),
+            "phonemeBMP": (-0.02, 0.00, -0.035),
+            "lipStretcher": (0.02, 0.0001, -0.035),
+            "sharpLipPuller": (0.1, 0.00, -0.015),
+            "upperLipsPart": (-0.03, 0.00, -0.015),
+            "upperLipsToward": (0.01, 0.00, -0.015),
+            "upperLipRaiser": (0.03, 0.00, -0.015),
+            "lipCornerDepressor": (0.1, 0.00, -0.035),
+            "upperLipFunneler": (-0.01, 0.00, -0.015),
+            "lowerLipSuck": (0.00, 0.00, -0.055),
+            "lipTightener": (0.075, 0.00, -0.035),
         },
         "Unified": {
             "lipSideways": {
                 "left": "lipSidewaysL",
                 "right": "lipSidewaysR",
-                "pos": (0.00, 0.0001, -0.02)  # где будет располагаться контроллер на лице
+                "pos": (0.00, 0.0001, -0.035)  # где будет располагаться контроллер на лице
         },
         }
     },
     "Jaw": {
-        "location": (0.025, 0.0, -0.075),
+        "location": (0.025, 0.0, -0.09),
         "scale": (0.095, 0.0001, 0.015),
         "positions": {
-            "jawOpen": (0.00, 0.00, -0.075),
-            "jawSuck": (0.02, 0.00, -0.075),
-            "jawThrust": (-0.02, 0.00, -0.075),
+            "jawOpen": (0.00, 0.00, -0.09),
+            "jawSuck": (0.02, 0.00, -0.09),
+            "jawThrust": (-0.02, 0.00, -0.09),
         },
         "Unified": {
             "jawSideways": {
                 "left": "jawSidewaysL",
                 "right": "jawSidewaysR",
-                "pos": (0.04, 0.00, -0.075)  # где будет располагаться контроллер на лице
+                "pos": (0.04, 0.00, -0.09)  # где будет располагаться контроллер на лице
         },
     },
 }
@@ -114,44 +132,140 @@ face_positions = {
 # 4) Функции для создания пустышек и драйверов
 # ----------------------------------------------------------------------------
 
-def create_parent_empty(name, location, collection, size=0.02, parent=None):
-    """Создаёт родительскую пустышку (CIRCLE) в указанных координатах."""
-    parent_obj = bpy.data.objects.new(name, None)
-    parent_obj.empty_display_type = 'CIRCLE'
-    parent_obj.empty_display_size = size
-    parent_obj.location = location
-    bpy.context.evaluated_depsgraph_get().update()
+def mark_face_rig_object(obj):
+    obj[rig_object_marker] = True
+    obj.show_in_front = True
+    obj.show_name = False
+    return obj
+
+
+def clean_previous_face_rig(collection):
+    for obj in list(collection.objects):
+        if obj.get(rig_object_marker):
+            obj_data = obj.data
+            bpy.data.objects.remove(obj, do_unlink=True)
+            if isinstance(obj_data, bpy.types.Curve) and obj_data.users == 0:
+                bpy.data.curves.remove(obj_data)
+
+
+def get_or_create_collection(name):
+    collection = bpy.data.collections.get(name)
+    if not collection:
+        collection = bpy.data.collections.new(name)
+        bpy.context.scene.collection.children.link(collection)
+    return collection
+
+
+def get_rig_material(name, color):
+    material_name = f"Dota2FaceRig_{name}"
+    material = bpy.data.materials.get(material_name)
+    if not material:
+        material = bpy.data.materials.new(material_name)
+    material.diffuse_color = color
+    material.use_nodes = True
+    bsdf = material.node_tree.nodes.get("Principled BSDF")
+    if bsdf:
+        if "Base Color" in bsdf.inputs:
+            bsdf.inputs["Base Color"].default_value = color
+        if "Alpha" in bsdf.inputs:
+            bsdf.inputs["Alpha"].default_value = color[3]
+        if "Emission Color" in bsdf.inputs:
+            bsdf.inputs["Emission Color"].default_value = color
+        if "Emission Strength" in bsdf.inputs:
+            bsdf.inputs["Emission Strength"].default_value = 0.35
+    return material
+
+
+def get_category_color(category_name):
+    return category_colors.get(category_name, default_rig_color)
+
+
+def create_curve_object(name, points, collection, color, bevel_depth=0.001):
+    curve = bpy.data.curves.new(name, type="CURVE")
+    curve.dimensions = "3D"
+    curve.resolution_u = 2
+    curve.bevel_depth = bevel_depth
+    curve.bevel_resolution = 3
+
+    spline = curve.splines.new("POLY")
+    spline.points.add(len(points) - 1)
+    for point, co in zip(spline.points, points):
+        point.co = (co[0], co[1], co[2], 1.0)
+
+    curve.materials.append(get_rig_material(name, color))
+    obj = mark_face_rig_object(bpy.data.objects.new(name, curve))
+    obj.hide_render = True
+    collection.objects.link(obj)
+    return obj
+
+
+def circle_points(radius, segments=32):
+    points = []
+    for index in range(segments):
+        angle = 2.0 * math.pi * index / segments
+        points.append((math.cos(angle) * radius, 0.0, math.sin(angle) * radius))
+    points.append(points[0])
+    return points
+
+
+def rectangle_points(scale):
+    width, _, height = scale
+    return [
+        (-width, 0.0, -height),
+        (width, 0.0, -height),
+        (width, 0.0, height),
+        (-width, 0.0, height),
+        (-width, 0.0, -height),
+    ]
+
+
+def diamond_points(radius):
+    return [
+        (0.0, 0.0, radius),
+        (radius, 0.0, 0.0),
+        (0.0, 0.0, -radius),
+        (-radius, 0.0, 0.0),
+        (0.0, 0.0, radius),
+    ]
+
+
+def relative_location(location, origin):
+    return (
+        location[0] - origin[0],
+        location[1] - origin[1],
+        location[2] - origin[2],
+    )
+
+
+def create_parent_empty(name, location, collection, size=0.02, parent=None, color=default_rig_color):
+    """Создаёт цветную опорную форму контроллера."""
+    parent_obj = create_curve_object(name, circle_points(size), collection, color, bevel_depth=size * 0.09)
     if parent:
         parent_obj.parent = parent
-        parent_obj.matrix_parent_inverse = parent.matrix_world.inverted()
         parent_obj.hide_select = True
-    parent_obj.hide_render = True
-    collection.objects.link(parent_obj)
+    parent_obj.location = location
 
     return parent_obj
 
 
-def create_child_empty(name, parent, collection, size=0.01, type=None):
-    """Создаёт дочернюю пустышку (CIRCLE) с локальным смещением (0,0,0)."""
-    child = bpy.data.objects.new(name, None)
-    child.empty_display_type = 'CIRCLE'
-    child.empty_display_size = size
+def create_child_empty(name, parent, collection, size=0.01, free_move=False, color=default_rig_color):
+    """Создаёт выделяемый цветной контроллер."""
+    points = circle_points(size * 1.35) if free_move else diamond_points(size * 1.65)
+    child = create_curve_object(name, points, collection, color, bevel_depth=size * 0.16)
     child.parent = parent
-    child.hide_render = True
-    if not type:
-        child.constraints.new(type='LIMIT_DISTANCE')
-        child.constraints["Limit Distance"].target = parent
-        child.constraints["Limit Distance"].distance = 0.14
-        child.lock_location[1] = True
+    child.lock_location[1] = True
+    if not free_move:
+        constraint = child.constraints.new(type='LIMIT_DISTANCE')
+        constraint.target = parent
+        constraint.distance = 0.14
         child.lock_location[2] = True
     child.location = (0, 0, 0)  # локальные координаты
-    collection.objects.link(child)
 
     return child
 
 
-def create_frames(display_text, collection, scale, location, parent=None):
-    frame = bpy.data.objects.new(display_text, None)
+def create_frames(display_text, collection, scale, location, parent=None, color=default_rig_color):
+    frame = create_curve_object(display_text, rectangle_points(scale), collection, color, bevel_depth=0.0012)
 
     font_curve = bpy.data.curves.new(type="FONT", name=display_text)
     font_curve.body = display_text
@@ -159,40 +273,24 @@ def create_frames(display_text, collection, scale, location, parent=None):
     font_curve.size = 0.0125
     font_curve.align_y = "TOP"
 
-    frame_text = bpy.data.objects.new(display_text, object_data=font_curve)
-    frame_text.location = (location[0] - scale[0] + 0.002, location[1], location[2] + scale[2])
+    frame_text = mark_face_rig_object(bpy.data.objects.new(display_text, object_data=font_curve))
+    frame_text.location = (-scale[0] + 0.002, 0.0, scale[2] - 0.002)
     frame_text.rotation_euler[0] = math.radians(90)
-
-    bpy.context.evaluated_depsgraph_get().update()
-
-    frame.empty_display_type = "CUBE"
-    frame.empty_display_size = 1
-    frame.location = location
-
-    frame.scale[0] = scale[0]
-    frame.scale[1] = scale[1]
-    frame.scale[2] = scale[2]
+    font_curve.materials.append(get_rig_material(f"{display_text}_Text", color))
 
     if parent:
         frame.parent = parent
-
-        frame_text.parent = parent
-        frame_text.matrix_parent_inverse = parent.matrix_world.inverted()
-
         frame.hide_select = True
+
+    frame.location = location
+    frame_text.parent = frame
 
     frame.hide_render = True
     frame_text.hide_select = True
     frame_text.hide_render = True
 
-    if not parent:
-        frame_text = None
-
-    collection.objects.link(frame)
-    if frame_text:
-        collection.objects.link(frame_text)
+    collection.objects.link(frame_text)
     return frame
-
 
 def add_driver_for_shape_key(shape_key, expression, child_empty, rig_master, var_names_axes):
     """
@@ -205,7 +303,10 @@ def add_driver_for_shape_key(shape_key, expression, child_empty, rig_master, var
       - mult для чтения rig_master["controller_strength"]
     Итоговое выражение:  mult * (expression)
     """
-    shape_key.driver_remove("value")
+    try:
+        shape_key.driver_remove("value")
+    except (TypeError, ValueError, RuntimeError):
+        pass
     fcurve = shape_key.driver_add("value")
     driver = fcurve.driver
 
@@ -243,7 +344,7 @@ def create_face_rig(context):
     # 5.1 Проверяем объект с Shape Keys
 
     obj = context.scene.face_rig_target
-    if not obj or not obj.data.shape_keys:
+    if not obj or obj.type != 'MESH' or not obj.data.shape_keys:
         print("Активный объект не найден или не имеет Shape Keys.")
         return
 
@@ -252,41 +353,52 @@ def create_face_rig(context):
 
     # 5.2 Создаём/находим коллекцию для контроллеров
 
+    rig_master_name = "FaceRigMaster"
+    previous_rig_master = bpy.data.objects.get(rig_master_name)
+    rig_master_strength = previous_rig_master.get("controller_strength", 10.0) if previous_rig_master else 10.0
+
     frames_collection_name = "Frames_Controller"
-    if frames_collection_name not in bpy.data.collections:
-        frames_collection = bpy.data.collections.new(frames_collection_name)
-        bpy.context.scene.collection.children.link(frames_collection)
-    else:
-        frames_collection = bpy.data.collections[frames_collection_name]
+    frames_collection = get_or_create_collection(frames_collection_name)
+    clean_previous_face_rig(frames_collection)
 
     # 5.3 Создаём (или берём существующий) FaceRigMaster с controller_strength
-    rig_master_name = "FaceRigMaster"
-    if rig_master_name in bpy.data.objects:
-        rig_master = bpy.data.objects[rig_master_name]
-    else:
-        rig_master = bpy.data.objects.new(rig_master_name, None)
-        rig_master.empty_display_type = 'PLAIN_AXES'
-        rig_master.empty_display_size = 0.001
-        bpy.context.scene.collection.objects.link(rig_master)
+    rig_master = bpy.data.objects.get(rig_master_name)
+    if rig_master and rig_master.type == 'EMPTY':
+        bpy.data.objects.remove(rig_master, do_unlink=True)
+        rig_master = None
+
+    if not rig_master:
+        rig_master = create_curve_object(
+            rig_master_name,
+            circle_points(0.006),
+            frames_collection,
+            get_category_color("Face Rig"),
+            bevel_depth=0.0008,
+        )
+    mark_face_rig_object(rig_master)
 
     if "controller_strength" not in rig_master:
-        rig_master["controller_strength"] = 10.0  # по умолчанию
+        rig_master["controller_strength"] = rig_master_strength  # по умолчанию
 
     main_frame = create_parent_empty("Face Rig",
                                collection=frames_collection,
                                size=0.0001,
-                               location=face_positions["Main Empty"]["location"]
+                               location=face_positions["Main Empty"]["location"],
+                               color=get_category_color("Face Rig")
                                )
 
     for frame_name, frame_info in face_positions.items():
             if frame_name == "Main Empty":
                 continue
 
+            frame_color = get_category_color(frame_name)
+            frame_location = frame_info["location"]
             frame = create_frames(frame_name,
                                   collection=frames_collection,
                                   scale=frame_info["scale"],
-                                  location=frame_info["location"],
-                                  parent=main_frame
+                                  location=frame_location,
+                                  parent=main_frame,
+                                  color=frame_color
                                   )
             if frame_info.get("Unified"):
                 for group_name, info in frame_info["Unified"].items():
@@ -305,11 +417,12 @@ def create_face_rig(context):
                     # Иначе создаём контроллер
                     parent_name = f"{group_name}_PARENT"
                     child_name = f"{group_name}_CTRL"
+                    controller_pos = relative_location(pos, frame_location)
 
-                    parent_obj = create_parent_empty(parent_name, pos, frames_collection, size=parent_shape_size,
-                                                     parent=frame)
+                    parent_obj = create_parent_empty(parent_name, controller_pos, frames_collection, size=parent_shape_size,
+                                                     parent=frame, color=frame_color)
                     child_obj = create_child_empty(child_name, parent_obj, frames_collection,
-                                                   size=child_shape_size)
+                                                   size=child_shape_size, color=frame_color)
 
                     # Если есть левый шейп
                     if have_left:
@@ -340,11 +453,13 @@ def create_face_rig(context):
                     if sk_name not in key_blocks:
                         if sk_name == "Stereo":
                             for sk_shape_name, info in coord.items():
+                                controller_pos = relative_location(info["location"], frame_location)
                                 eye_parent = create_parent_empty(sk_shape_name + "_PARENT",
-                                                                 info["location"],
-                                                                 frames_collection, parent=frame)
+                                                                 controller_pos,
+                                                                 frames_collection, parent=frame,
+                                                                 color=frame_color)
                                 eye_child = create_child_empty(sk_shape_name + "_CTRL", eye_parent, frames_collection,
-                                                               type=1)
+                                                               free_move=True, color=frame_color)
                                 for sk_eye_name, direction in info.items():
                                     if sk_eye_name not in key_blocks:
                                         continue  # нет такого шейпа, пропускаем
@@ -379,11 +494,12 @@ def create_face_rig(context):
 
                     parent_name = sk_name + "_PARENT"
                     child_name = sk_name + "_CTRL"
+                    controller_pos = relative_location(coord, frame_location)
 
-                    parent_empty = create_parent_empty(parent_name, coord, frames_collection, size=parent_shape_size,
-                                                       parent=frame)
+                    parent_empty = create_parent_empty(parent_name, controller_pos, frames_collection, size=parent_shape_size,
+                                                       parent=frame, color=frame_color)
                     child_empty = create_child_empty(child_name, parent_empty, frames_collection, size=child_shape_size,
-                                                     type=None)
+                                                     free_move=False, color=frame_color)
 
                     # По умолчанию — двигаем по X
                     expr = "varX"
