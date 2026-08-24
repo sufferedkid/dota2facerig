@@ -4,7 +4,7 @@ _Blender Version: 4.2.3_
 
 _Addon Version: 0.3_
 
-## Установка аддона 💾
+# Установка аддона 💾
 
 1. Скачайте архив аддона.
 2. Установите аддон в Blender: `Preferences -> Add-ons -> Install From Disk...`.
@@ -13,7 +13,7 @@ _Addon Version: 0.3_
 
 ![Dota2Tools panel](docs/images/dota2tools-panel.png)
 
-## Функции
+# Функции
 
 ## Сборка персонажа ⚙️
 
@@ -42,12 +42,12 @@ _Addon Version: 0.3_
 
 ![Texture upscaler fields](docs/images/texture-upscaler-fields.png)
 
-## Ссылки
+# Ссылки
 
 - Texture Upscaler: https://github.com/haseebahmed295/Texture_Upscaler
 - Fuse Skeletons: https://github.com/AnimNyan/Fuse-Skeletons
 
-## Статус
+# Статус
 
 Аддон находится в разработке, могут быть баги.
 
